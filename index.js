@@ -1,15 +1,14 @@
 //link to generateHTML
+const generateHTML = require('./src/generateHTML')
+//team profiles 
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 
 
 //node modules 
 const fs = require('fs');
 const inquirer = require('inquirer');
-
-//team profiles 
-const Manager = require('./lib/Manager');
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
-const { resolve } = require('path');
 
 //team array
 const teamArray =[];
@@ -55,11 +54,24 @@ const addManager = () => {
                 }
             }
         },
+        {
+            type: 'input',
+            name: 'officeNumber',
+            message: "Please enter the manager's office number",
+            validate: nameInput => {
+                if (isNaN(nameInput)){
+                    console.log('Please enter an office number!')
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        },
     ])
     // organize data for manager 
     .then(managerInput => {
-        const { name, id, email } = managerInput;
-        const manager = new Manager (name, id, email);
+        const { name, id, email, officeNumber } = managerInput;
+        const manager = new Manager (name, id, email, officeNumber);
 
         teamArray.push(manager);
         console.log(manager);
@@ -116,12 +128,12 @@ const addEmployee = () => {
         }, 
         {
             type: 'input', 
-            name: 'github',
+            name: 'username',
             message: "Please enter employee's github username.",
-            when: (input) => input.role === 'Engineer', 
-            validate: gitInput => {
-                if (gitInput){
-                    return true;
+            when: (input) => input.role === "Engineer", 
+            validate: nameInput => {
+                if (nameInput ) {
+                    return(true);
                 } else {
                     console.log("Please enter a github username.");
                     return false;
@@ -132,9 +144,9 @@ const addEmployee = () => {
             type: 'input', 
             name: 'school',
             message: "Please enter employee's School.",
-            when: (input) => input.role === 'Intern',
-            validate: schoolInput => {
-                if (schoolInput){
+            when: (input) => input.role === "Intern",
+            validate: nameInput => {
+                if (nameInput){
                     return true;
                 } else {
                     console.log("Please enter a school name.");
@@ -150,16 +162,16 @@ const addEmployee = () => {
         },
    ])
    .then(employeeData => {
-        let { name, id, email, role, github, school, confirmAddEmployee } = employeeData;
+        let { name, id, email, role, username, school, confirmAddEmployee } = employeeData;
         let employee;
 
         // organize data for employee types 
 
-        if(role === 'Engineer') {
-            employee = new Engineer (name, id, email, github);
+        if(role === "Engineer") {
+            employee = new Engineer (name, id, email, username);
 
             console.log(employee);
-        } else if (role === 'Intern') {
+        } else if (role === "Intern") {
             employee = new Intern (name, id, email, school);
 
             console.log(employee)
