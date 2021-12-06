@@ -156,7 +156,7 @@ const addEmployee = () => {
         },
         {
             type: 'confirm',
-            confrim: 'confirmAddEmployee',
+            name: 'confirmAddEmployee',
             message: 'Would you like to add more team members?', 
             default: false
         },
