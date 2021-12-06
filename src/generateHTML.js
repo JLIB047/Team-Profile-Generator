@@ -56,6 +56,44 @@ const generateIntern = function (intern) {
     `
 };
 
+//push array html page 
+generateHTML = (data) => {
+
+    //array for cards 
+    pageArray = [];
+
+    for (let i = 0; i < data.length; i ++){
+        const employee = data[i];
+        const role = employee.getRole();
+
+        //call manager ()
+        if (role === 'Manager') {
+            const managerCard = generateManager(employee);
+
+            pageArray.push(managerCard);
+        }
+        //call engineer ()
+        if (role === 'Engineer') {
+            const engineerCard = generateEngineer(employee);
+
+            pageArray.push(engineerCard);
+        }
+        //call intern ()
+        if (role === 'Intern') {
+            const internCard = generateIntern(employee);
+
+            pageArray.push(internCard);
+        }
+    }
+
+    const employeeCards = pageArray.join('')
+
+    const generateTeam = generateTeamProfile(employeeCards);
+    return generateTeam;
+
+}
+
+// const generateHTML();
 // push in to HTML page 
 // create an array 
 // create HTML template 
